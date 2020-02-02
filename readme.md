@@ -10,6 +10,6 @@ In theory it is mostly working, I want to develop this into a full demo game tha
 ### Notes
 I sortof invented this before realizing that GGPO was a thing, this is likely something like that.
 
-These diagrams show what I was originally planning to do, and what I'm trying to do.
+These diagrams show what I was originally planning to do, then what I was trying to do, I need to make a new one for what I'm currently trying to do.
 ![Old bad method](OldBadMethod.png)
 ![New good method](NewGoodMethod.png)
