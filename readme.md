@@ -11,5 +11,5 @@ In theory it is mostly working, I want to develop this into a full demo game tha
 I sortof invented this before realizing that GGPO was a thing, this is likely something like that.
 
 These diagrams show what I was originally planning to do, and what I'm trying to do.
-![Old bad method](./OldBadMethod.PNG)
-![Old bad method](./NewGoodMethod.PNG)
+![Old bad method](OldBadMethod.png)
+![New good method](NewGoodMethod.PNG)
