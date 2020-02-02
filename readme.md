@@ -12,4 +12,4 @@ I sortof invented this before realizing that GGPO was a thing, this is likely so
 
 These diagrams show what I was originally planning to do, and what I'm trying to do.
 ![Old bad method](OldBadMethod.png)
-![New good method](NewGoodMethod.PNG)
+![New good method](NewGoodMethod.png)
