@@ -4,8 +4,8 @@ This repository includes:
 
 also this readme is likely out of date, sorry.
 
-### Finished
-In theory it is mostly working, I want to develop this into a full demo game that you can play now
+### Where it is at
+In theory it is mostly working, I want to develop this into a full demo game that you can play now, I'll discover thousands of issues doing that.
 
 ### Notes
 I sortof invented this before realizing that GGPO was a thing, this is likely something like that.
