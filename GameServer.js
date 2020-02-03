@@ -1,7 +1,5 @@
 const uuidv4 = require('uuid/v4');
-const {EventQueue} = require('./client/EventQueue.js')
-
-console.log(EventQueue)
+const {EventQueue} = require('./client/shared/EventQueue.js')
 
 class GameServer{
     constructor(webSocketServer){
@@ -20,7 +18,7 @@ class GameServer{
     }
     runEveryTic(){
         this.tic++
-        if(this.tic % 5 == 0){
+        if(this.tic % 100 == 0){
             this.wss.clients.forEach((socket)=>{
                 socket.send(JSON.stringify({type:"serverTic",tic:this.tic}))
             });
@@ -40,7 +38,9 @@ class GameServer{
         //assign the websocket a unique id
         websocket.id = uuidv4();
         //send it back so the client know's it's own id
-        websocket.send(JSON.stringify({type:"connection",id:websocket.id}))
+        websocket.send(JSON.stringify({type:"identity",id:websocket.id}))
+        //and we also broadcast to all clients, so they know about the connection
+        this.broadcastToAllClients(JSON.stringify({type:"connection",uid:websocket.id,tic:this.tic}))
         //create a message handler
         websocket.on('message',(json)=>{this.handleMessage(json,websocket)})
     }
@@ -55,6 +55,11 @@ class GameServer{
             //add clientID to event
             event.cid = websocket.id
             this.broadcastToAllClientsExcept(websocket.id,JSON.stringify(event))
+        }
+    }
+    broadcastToAllClients(serialData){
+        for(let websocket of this.wss.clients){
+            websocket.send(serialData)
         }
     }
     broadcastToAllClientsExcept(clientID,serialData){
