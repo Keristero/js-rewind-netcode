@@ -1,8 +1,6 @@
 class TankGame extends NetworkedGame{
-    constructor(netcode,eventqueue){
-        super()
-        this.netcode = netcode
-        this.eventqueue = eventqueue
+    constructor(eventqueue){
+        super(eventqueue)
 
         //Add Keypress Listeners
         document.body.addEventListener("keydown", e => {
@@ -20,15 +18,15 @@ class TankGame extends NetworkedGame{
         console.log(`TankGame running at ${this.ticsPerSecond}tps, ${this.ticInterval}ms tic length`)
 
     }
-    CreateEvent(eventData){
-        console.log(`TankGame CreateEvent unimplemented`,eventData)
+    CreateEvent(eventType,eventData){
+        console.log("creating event",eventData)
+        eventData.type = eventType
+        eventData.tic = this.state.metadata.tic +1
+        this.eventQueue.AddLocalEvent(eventData)
     }
     Update(){
         this.state.metadata.tic++
-        this.eventqueue.ProcessEventQueue(this.state.metadata.tic)
-    }
-    ProcessEvent(){
-        
+        this.eventQueue.ProcessEventQueue(this.state.metadata.tic)
     }
     createCanvasCtx(){
 

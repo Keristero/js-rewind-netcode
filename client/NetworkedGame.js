@@ -1,6 +1,13 @@
 const NetworkObjects = {}
 class NetworkedGame{
-    constructor(snapshotHistory = 20){
+    constructor(eventQueue,snapshotHistory = 20){
+        this.eventQueue = eventQueue
+        //Add event handlers
+        this.eventQueue.onEvent = (event)=>{this.ProcessEvent(event)}
+        this.eventQueue.onRollback = (event)=>{this.RollBack(event)}
+        this.eventQueue.onTicSync = (tic)=>{this.TicSync(tic)}
+
+        //Initialize state
         this.state = {
             metadata:{
                 tic:0,
@@ -64,11 +71,21 @@ class NetworkedGame{
             }
         }
     }
+    TicSync(tic){
+        //set tic to tic recieved from server
+        this.state.metadata.tic = tic
+        console.log("tic =",tic)
+    }
     /**
      * 
-     * @param {Number} tics number of tics to rollback
+     * @param {Number} targetTic tic to rollback to
      */
-    RollBack(tics){
-        this.RestoreSnapshot(this.snapshots[tics])
+    RollBack(targetTic){
+        console.log(`Rolling back to ${targetTic} from ${this.state.metadata.tic}`)
+        let ticsToRollback = this.state.metadata.tic-targetTic //number of tics to rollback
+        this.RestoreSnapshot(this.snapshots[ticsToRollback])
+    }
+    ProcessEvent(event){
+        console.log("process event does nothing yet",event)
     }
 }

@@ -1,5 +1,5 @@
 const uuidv4 = require('uuid/v4');
-const {EventQueue} = require('./client/shared/EventQueue.js')
+const {EventQueue} = require('./client/EventQueue.js')
 
 class GameServer{
     constructor(webSocketServer){

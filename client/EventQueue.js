@@ -14,21 +14,21 @@ class EventQueue{
         this.events = {}
         this.maximumTicAge = 100
     }
-    GetTicData(tic){
+    _GetTicData(tic){
         if(!this.events[tic]){
             this.events[tic] = {}
         }
         return this.events[tic]
     }
-    GetClientEvents(ticData,clientID){
+    _GetClientEvents(ticData,clientID){
         if(!ticData[clientID]){
             ticData[clientID] = []
         }
         return ticData[clientID]
     }
     AddEvent(event,clientID){
-        let ticData = this.GetTicData(event.tic)
-        let clientEvents = this.GetClientEvents(ticData,clientID)
+        let ticData = this._GetTicData(event.tic)
+        let clientEvents = this._GetClientEvents(ticData,clientID)
         /*
         ensure that event arrived chronologically, by ensuring the lid (local id)
         of the previous event is exactly 1 less than the lid of the new event
@@ -45,7 +45,7 @@ class EventQueue{
             clientEvents.sort((a, b) => a.lid - b.lid);
         }
     }
-    PruneEvents(currentTic){
+    _PruneEvents(currentTic){
         //Deletes all events for the oldest tic (if it is old enough)
         let sortedTics = Object.keys(this.events).sort((a, b) => a - b);
         let oldestTic = sortedTics[0]
@@ -57,18 +57,32 @@ class EventQueue{
 
 
 class LocalEventQueue extends EventQueue{
-    constructor(clientID,cb_rollbackState,cb_event){
+    constructor(clientNetcode){
         super()
-        this.clientID = clientID
+        this.netcode = clientNetcode
+        this.clientID = ""
         this.localID = 0
         this.earliestTic = Infinity
-
-        this.cb_rollbackState = cb_rollbackState
-        this.cb_event = cb_event
+        //Add event handlers
+        this.netcode.onEventFromServer = (event)=>{this._AddServerEvent(event)}
+        this.netcode.onIdentity = (event)=>{this._onIdentity(event)}
+        this.netcode.onTicSync = (tic)=>{this.onTicSync(tic)}
+    }
+    _onIdentity(clientID){
+        this.clientID = clientID
+    }
+    onTicSync(tic){
+        console.warn("EventQueue onTicSync unimplemented",tic)
+    }
+    onRollback(targetTic){
+        console.warn("EventQueue onRollback unimplemented",targetTic)
+    }
+    onEvent(event){
+        console.warn("EventQueue onEvent unimplemented",event)
     }
     ProcessEventQueue(currentTic){
         //Prune old events
-        this.PruneEvents(currentTic)
+        this._PruneEvents(currentTic)
         if(this.earliestTic == Infinity){
             //No events have arrived, no need to process event queue
             return
@@ -80,18 +94,18 @@ class LocalEventQueue extends EventQueue{
         if(this.earliestTic < currentTic){
             //If any event arrived for an earlier tic than the current tic
             //trigger a rollback to said tic
-            this.cb_rollbackState(this.earliestTic)
+            this.onRollback(this.earliestTic)
         }
         //Now loop through all of the tics (including the current tic)
         let iTic = this.earliestTic
         for(; iTic <= currentTic; iTic++){
-            this.ProcessTic(iTic)
+            this._ProcessTic(iTic)
         }
 
         //Finally reset earliestTic to Infinity
         this.earliestTic = Infinity
     }
-    ProcessTic(tic){
+    _ProcessTic(tic){
         if(this.events[tic]){
             let ticData = this.events[tic]
             for(let clientID in ticData){
@@ -99,7 +113,7 @@ class LocalEventQueue extends EventQueue{
                 //For each client's events
                 for(let event of clientEvents){
                     //trigger each event
-                    this.cb_event(event)
+                    this.onEvent(event)
                 }
             }
         }
@@ -108,10 +122,12 @@ class LocalEventQueue extends EventQueue{
         //Add an event produced by the local machine
         //Assign a local id
         event.lid = this.localID++
+        //Send event
+        this.netcode.SendEvent(event)
         //Add event using own clientID
         this.AddEvent(event,this.clientID)
     }
-    AddServerEvent(event){
+    _AddServerEvent(event){
         //Add an event sent by the server
         //Add event using clientID from event               TODO:add cid alias system to save bandwith
         this.AddEvent(event,event.cid)
