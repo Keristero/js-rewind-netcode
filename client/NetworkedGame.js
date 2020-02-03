@@ -59,7 +59,6 @@ class NetworkedGame{
         if(this.snapshots.length > 25){
             this.snapshots.pop()
         }
-        console.log(this.snapshots)
     }
     RestoreSnapshot(snapshotJSON){
         this.state = JSON.parse(snapshotJSON)
@@ -74,18 +73,21 @@ class NetworkedGame{
     TicSync(tic){
         //set tic to tic recieved from server
         this.state.metadata.tic = tic
-        console.log("tic =",tic)
     }
     /**
      * 
      * @param {Number} targetTic tic to rollback to
      */
     RollBack(targetTic){
-        console.log(`Rolling back to ${targetTic} from ${this.state.metadata.tic}`)
+        let originalTic = this.state.metadata.tic
+        console.warn(`Rolling back to ${targetTic} from ${originalTic}`)
         let ticsToRollback = this.state.metadata.tic-targetTic //number of tics to rollback
         this.RestoreSnapshot(this.snapshots[ticsToRollback])
     }
     ProcessEvent(event){
+        if(event.type == "setTic"){
+            this.state.metadata.tic = event.targetTic
+        }
         console.log("process event does nothing yet",event)
     }
 }

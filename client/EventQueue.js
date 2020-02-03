@@ -106,6 +106,7 @@ class LocalEventQueue extends EventQueue{
         this.earliestTic = Infinity
     }
     _ProcessTic(tic){
+        this.onEvent({type:"setTic",targetTic:tic})
         if(this.events[tic]){
             let ticData = this.events[tic]
             for(let clientID in ticData){

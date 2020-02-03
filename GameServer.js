@@ -18,7 +18,7 @@ class GameServer{
     }
     runEveryTic(){
         this.tic++
-        if(this.tic % 100 == 0){
+        if(this.tic % 5 == 0){
             this.wss.clients.forEach((socket)=>{
                 socket.send(JSON.stringify({type:"serverTic",tic:this.tic}))
             });
