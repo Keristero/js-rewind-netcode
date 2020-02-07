@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4');
 const {EventQueue} = require('./client/EventQueue.js')
+const {GameLoop} = require('./client/GameLoop.js')
 
 class GameServer{
     constructor(webSocketServer){
@@ -11,10 +12,10 @@ class GameServer{
 
         //start game tic loop
         this.tic = 0
-        this.ticsPerSecond = 20
-        this.ticInterval = 1000/this.ticsPerSecond
-        this.interval_tic = setInterval(()=>{this.runEveryTic()},this.ticInterval)
-        console.log(`Game Server running at ${this.ticsPerSecond}tps, ${this.ticInterval}ms tic length`)
+        let loop = new GameLoop(()=>{
+            this.runEveryTic()
+        },)
+        loop.Start()
     }
     runEveryTic(){
         this.tic++

@@ -27,10 +27,10 @@ class NetworkedGame{
         this.eventID = 0
         this.ticsPerSecond = 20
         this.ticInterval = 1000/this.ticsPerSecond
-        this.interval_update = setInterval(()=>{
+        let loop = new GameLoop(()=>{
             this.Update()
-        },this.ticInterval)
-        console.log(`TankGame running at ${this.ticsPerSecond}tps, ${this.ticInterval}ms tic length`)
+        },)
+        loop.Start()
     }
     Update(){
         //Snapshot state as it is now
