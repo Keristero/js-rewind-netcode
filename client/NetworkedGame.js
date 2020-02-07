@@ -27,7 +27,9 @@ class NetworkedGame{
         this.eventID = 0
         this.ticsPerSecond = 20
         this.ticInterval = 1000/this.ticsPerSecond
-        this.interval_update = setInterval(()=>{this.Update()},this.ticInterval)
+        this.interval_update = setInterval(()=>{
+            this.Update()
+        },this.ticInterval)
         console.log(`TankGame running at ${this.ticsPerSecond}tps, ${this.ticInterval}ms tic length`)
     }
     Update(){
@@ -83,9 +85,11 @@ class NetworkedGame{
             }
         }
     }
-    TicSync(tic){
+    TicSync(serverTic){
         //set tic to tic recieved from server
-        this.state.metadata.tic = tic
+        if(this.state.metadata.tic != serverTic){
+            console.warn(`tic ${this.state.metadata.tic}/${serverTic}, ${this.state.metadata.tic-serverTic} tics out`)
+        }
     }
     /**
      * 

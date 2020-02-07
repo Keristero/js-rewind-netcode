@@ -13,7 +13,7 @@ class TankGame extends NetworkedGame{
     CreateEvent(eventType,eventData){
         console.log("creating event",eventData)
         eventData.type = eventType
-        eventData.tic = this.state.metadata.tic +1
+        eventData.tic = this.state.metadata.tic +2
         this.eventQueue.AddLocalEvent(eventData)
     }
     createCanvasCtx(){
@@ -21,6 +21,8 @@ class TankGame extends NetworkedGame{
     }
     ProcessEvent(event){
         super.ProcessEvent(event)
-        if(event.type == "")
+        if(event.type == ""){
+
+        }
     }
 }

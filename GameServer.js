@@ -19,9 +19,7 @@ class GameServer{
     runEveryTic(){
         this.tic++
         if(this.tic % 5 == 0){
-            this.wss.clients.forEach((socket)=>{
-                socket.send(JSON.stringify({type:"serverTic",tic:this.tic}))
-            });
+            this.broadcastToAllClients(JSON.stringify({type:"serverTic",tic:this.tic}))
         }
     }
     get clientCount(){

@@ -84,11 +84,8 @@ class LocalEventQueue extends EventQueue{
         //Prune old events
         this._PruneEvents(currentTic)
         if(this.earliestTic == Infinity){
-            //No events have arrived, no need to process event queue
-            return
-        }
-        if(this.earliestTic > currentTic){
-            //The events that arrived are for a future tic, no need to process event queue
+            //No events have arrived, just process the tic (to increment it) then return
+            this._ProcessTic(currentTic)
             return
         }
         if(this.earliestTic < currentTic){
