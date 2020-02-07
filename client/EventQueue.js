@@ -37,9 +37,12 @@ class EventQueue{
         //add the new event
         clientEvents.push(event)
         console.log("added event",event);
-        this.earliestTic = event.tic
+        if(event.tic < this.earliestTic){
+            this.earliestTic = event.tic
+        }
 
         if(previousEvent && previousEvent.lid !== event.lid-1){
+            console.warn("resorting events",clientEvents)
             //now sort the array if it needs sorting.
             //ascending (1,2,3)
             clientEvents.sort((a, b) => a.lid - b.lid);

@@ -4,6 +4,7 @@ class GameLoop{
         this.ticsPerSecond = ticsPerSecond
         this.ticInterval = 1000/this.ticsPerSecond
         this.looping = false
+        this.updateTime = 0
     }
     Start(){
         this.looping = true
@@ -17,7 +18,12 @@ class GameLoop{
         this.updateFunction()
         let now = performance.now()
         let timeLeftTillEnd = this.endTime-now
+        this.updateTime = this.ticInterval-timeLeftTillEnd
+        //console.log("remaining MS",this.ticInterval-timeLeftTillEnd)
         setTimeout(()=>{this.Update()},timeLeftTillEnd)
+        if(this.updateTime > 5){
+            console.warn("long update time",this.updateTime)
+        }
     }
 }
 

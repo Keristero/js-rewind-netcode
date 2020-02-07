@@ -3,17 +3,17 @@ class TankGame extends NetworkedGame{
         super(eventqueue)
 
         //Add Keypress Listeners
-        document.body.addEventListener("keydown", e => {
+        window.addEventListener("keydown", e => {
             this.CreateEvent("keydown",{keycode:e.keyCode})
         });
-        document.body.addEventListener("keyup", e => {
+        window.addEventListener("keyup", e => {
             this.CreateEvent("keyup",{keycode:e.keyCode})
         });
     }
     CreateEvent(eventType,eventData){
         console.log("creating event",eventData)
         eventData.type = eventType
-        eventData.tic = this.state.metadata.tic +2
+        eventData.tic = this.state.metadata.tic +1
         this.eventQueue.AddLocalEvent(eventData)
     }
     createCanvasCtx(){

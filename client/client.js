@@ -1,5 +1,7 @@
 console.log('loaded')
 
+let debugMode = false;
+
 let socket = new WebSocket(window.location.href.replace('http','ws'));
 
 //Create netcode using a websocket as a transport

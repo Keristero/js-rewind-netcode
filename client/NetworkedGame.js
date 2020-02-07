@@ -25,8 +25,6 @@ class NetworkedGame{
 
         //Start update loop
         this.eventID = 0
-        this.ticsPerSecond = 20
-        this.ticInterval = 1000/this.ticsPerSecond
         let loop = new GameLoop(()=>{
             this.Update()
         },)
@@ -88,7 +86,8 @@ class NetworkedGame{
     TicSync(serverTic){
         //set tic to tic recieved from server
         if(this.state.metadata.tic != serverTic){
-            console.warn(`tic ${this.state.metadata.tic}/${serverTic}, ${this.state.metadata.tic-serverTic} tics out`)
+            console.warn(`tic ${this.state.metadata.tic}/${serverTic}, ${this.state.metadata.tic-serverTic} tics out, skipping tics to sync, fix this later`)
+            this.state.metadata.tic = serverTic
         }
     }
     /**
@@ -102,6 +101,7 @@ class NetworkedGame{
         this.RestoreSnapshot(this.snapshots[ticsToRollback])
     }
     ProcessEvent(event){
+        console.log('event',event)
         if(event.type == "setTic"){
             this.state.metadata.tic = event.targetTic
         }
