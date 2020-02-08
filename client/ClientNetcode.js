@@ -23,7 +23,7 @@ class ClientNetcode{
         let data = JSON.parse(event.data)
 
         if(data.type == "identity"){
-            this.onIdentity(data.id)
+            this.onIdentity(data.uid)
         }else if(data.type == "pong"){
             this.ping = Date.now() - data.ms
         }else if(data.type == "serverTic"){

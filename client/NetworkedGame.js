@@ -40,7 +40,7 @@ class NetworkedGame{
         return this.state.metadata.nextObjectId++
     }
     GetClient(clientID){
-        return this.clients[clientID]
+        return this.state.clients[clientID]
     }
     CreateClient(clientID){
         if(typeof this.state.clients[clientID] == "undefined"){
@@ -48,6 +48,8 @@ class NetworkedGame{
                 inputs:{}
             }
             this.state.clients[clientID] = newClient
+            console.warn('new client connected',clientID)
+            return newClient
         }
     }
     DeleteClient(clientID){
@@ -59,6 +61,7 @@ class NetworkedGame{
         let objectType = newObject.constructor.name
         let objectGroup = this.GetObjectGroup(objectType)
         objectGroup[objectID] = newObject
+        return objectID
     }
     GetObjectGroup(objectType){
         if(!this.state.objects[objectType]){
@@ -104,6 +107,9 @@ class NetworkedGame{
         console.log('event',event)
         if(event.type == "setTic"){
             this.state.metadata.tic = event.targetTic
+        }
+        if(event.type == "connection"){
+            this.CreateClient(event.uid)
         }
     }
 }

@@ -20,7 +20,7 @@ class GameServer{
     runEveryTic(){
         this.tic++
         if(this.tic % 5 == 0){
-            this.broadcastToAllClients(JSON.stringify({type:"serverTic",tic:this.tic}))
+            this.broadcastTic()
         }
     }
     get clientCount(){
@@ -37,8 +37,9 @@ class GameServer{
         //assign the websocket a unique id
         websocket.id = uuidv4();
         //send it back so the client know's it's own id
-        websocket.send(JSON.stringify({type:"identity",id:websocket.id}))
+        websocket.send(JSON.stringify({type:"identity",uid:websocket.id}))
         //and we also broadcast to all clients, so they know about the connection
+        this.broadcastTic()
         this.broadcastToAllClients(JSON.stringify({type:"connection",uid:websocket.id,tic:this.tic}))
         //create a message handler
         websocket.on('message',(json)=>{this.handleMessage(json,websocket)})
@@ -55,6 +56,9 @@ class GameServer{
             event.cid = websocket.id
             this.broadcastToAllClientsExcept(websocket.id,JSON.stringify(event))
         }
+    }
+    broadcastTic(){
+        this.broadcastToAllClients(JSON.stringify({type:"serverTic",tic:this.tic}))
     }
     broadcastToAllClients(serialData){
         for(let websocket of this.wss.clients){
