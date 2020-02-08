@@ -17,4 +17,4 @@ I have not looked at the code for GGPO, but I originally set out to make somethi
 After finding out about GGPO I took some inspiration from how I heard that works.
 
 These diagrams show what I was originally planning to do, then what I was trying to do, I need to make a new one for what I'm currently trying to do.
-![Current Architecture](/notes/Iteration1.png)
+![Current Architecture](/notes/Iteration3.png)
