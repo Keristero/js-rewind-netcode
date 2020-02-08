@@ -1,15 +1,20 @@
-This repository includes:
-* __A Server__, which serves the client files via http, provides websocket connections, and runs the server netcode
-* __A Client__, which runs the client netcode, creates events from keypresses, and displays ping
+This framework has a few key parts
+* __Server__, which serves the client files via http, provides websocket connections
+* __Client Netcode__, handles connecting to the server
+* __Event Queue__, A queue which contains a list of actions from each client, for each game tic. when a tic is processed - this queue runs callbacks for each event in order.
+* __Networked Game__, A parent class for making networked games, handles saving and reloading of states, creation and deletion of peer clients.
 
 also this readme is likely out of date, sorry.
 
-### Where it is at
-In theory it is mostly working, I want to develop this into a full demo game that you can play now, I'll discover thousands of issues doing that.
+### Todo
+* Synchronize game state for clients that connect late (either send a serialized gamestate, or catch clients up using entire event queue?)
+* Handle serverTic synchronizing propperly (currently it is just set, causing lost events)
+* Identify clients on clientside correctly? right now when a new client connects the existing clients get the new clients ID?
+* Handle client disconnections
 
 ### Notes
-I sortof invented this before realizing that GGPO was a thing, this is likely something like that.
+I have not looked at the code for GGPO, but I originally set out to make something similar to that (except I was planning on predicting every possible game state and storing it... very bad idea)
+After finding out about GGPO I took some inspiration from how I heard that works.
 
 These diagrams show what I was originally planning to do, then what I was trying to do, I need to make a new one for what I'm currently trying to do.
-![Old bad method](OldBadMethod.png)
-![New good method](NewGoodMethod.png)
+![Current Architecture](/notes/Iteration1.png)

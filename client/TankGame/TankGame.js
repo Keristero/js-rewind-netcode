@@ -38,11 +38,11 @@ class TankGame extends NetworkedGame{
         window.requestAnimationFrame(()=>{this.Draw()})
     }
     DrawObjects(){
+        //call draw on EVERY object
         for(let objectType in this.state.objects){
             let objects = this.state.objects[objectType]
             for(let objectID in this.state.objects[objectType]){
                 let object = objects[objectID]
-                //call draw on EVERY object
                 object.Draw(this.ctx)
             }
         }
@@ -52,7 +52,7 @@ class TankGame extends NetworkedGame{
             let objects = this.state.objects[objectType]
             for(let objectID in this.state.objects[objectType]){
                 let object = objects[objectID]
-                //call draw on EVERY object
+                //call draw on Update for every tank, with client's controls
                 if(objectType == "Tank"){
                     let client = this.GetClient(object.clientID)
                     object.Update(client)
