@@ -16,5 +16,5 @@ also this readme is likely out of date, sorry.
 I have not looked at the code for GGPO, but I originally set out to make something similar to that (except I was planning on predicting every possible game state and storing it... very bad idea)
 After finding out about GGPO I took some inspiration from how I heard that works.
 
-These diagrams show what I was originally planning to do, then what I was trying to do, I need to make a new one for what I'm currently trying to do.
+Each component only talks to the components to the left and right of them, the Networked Game is independant of any netcode, relying only on the EventQueue
 ![Current Architecture](/notes/Iteration3.png)
