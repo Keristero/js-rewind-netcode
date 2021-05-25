@@ -1,3 +1,6 @@
+If you are looking for a good js-ggpo implementation, check out this instead:
+https://github.com/rameshvarun/netplayjs
+
 This framework has a few key parts
 * __Server__, which serves the client files via http, provides websocket connections
 * __Client Netcode__, handles connecting to the server
